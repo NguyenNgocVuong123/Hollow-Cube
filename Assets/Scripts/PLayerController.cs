@@ -12,13 +12,23 @@ public class PLayerController : MonoBehaviour
     private Rigidbody2D mybody;
     private bool IsGround,IsJumping;
     public bool IsFacingRight;
+    float _fallSpeedYDampingChangeThres;
     [SerializeField] LayerMask WhatIsGround;
     private CamFollowPlayerCam _camFollowC;
+    //
+    private float currentMoveSpeed;
+    public float dashSpeed;
+    public float dashTime= 0.5f,dashCountDown = 1f;
+    private float dashCounter;
+    private float dashCountDownCounter;
+    [SerializeField] TrailRenderer tr;
     
     private void Awake()
     {
         mybody=GetComponent<Rigidbody2D>();
         _camFollowC = _camFollowCam.GetComponent<CamFollowPlayerCam>();
+        _fallSpeedYDampingChangeThres = CameraManager.instance._fallSpeedYDampingChangeThreshold;
+        currentMoveSpeed = MoveSpeed;
     }
 
     private void FixedUpdate() {
@@ -26,18 +36,32 @@ public class PLayerController : MonoBehaviour
             TurnCheck();
         }
         Moving();
+        
     }
     void Update()
     {
+        Debug.Log("moveX: "+ MoveX);
         IsGround = Physics2D.OverlapCircle(feetPos.position,feetRadius,WhatIsGround);
         Jumping();
+        Dashing();
+        //nếu đang rơi
+        if(mybody.velocity.y <_fallSpeedYDampingChangeThres && !CameraManager.instance.IsLerpingYDamping &&!CameraManager.instance.LearpingFromPlayerFalling){
+            CameraManager.instance.LerpYDamping(true);
+        }
+        //nếu đang đứng im hoặc di chuyển
+        if(mybody.velocity.y >=0f &&!CameraManager.instance.IsLerpingYDamping &&CameraManager.instance.LearpingFromPlayerFalling){
+            //đặt lại điều kiện lerp để có thể gọi lại lần nữa
+            CameraManager.instance.LearpingFromPlayerFalling = false;
+            CameraManager.instance.LerpYDamping(false);
+        }
         
     }
     void Moving()
     {
         MoveX = Input.GetAxisRaw("Horizontal");
         // transform.position += new Vector3(MoveX, 0f, 0f) * Time.deltaTime * MoveSpeed;
-        mybody.velocity = new Vector2(MoveX * MoveSpeed, mybody.velocity.y);
+        mybody.velocity = new Vector2(MoveX * currentMoveSpeed, mybody.velocity.y);
+        
     }
 
     void Jumping()
@@ -84,6 +108,28 @@ public class PLayerController : MonoBehaviour
             transform.rotation = Quaternion.Euler(rotator);
             IsFacingRight = !IsFacingRight;
             _camFollowC.CallTurn();
+        }
+    }
+    void Dashing(){
+        if(Input.GetKeyDown(KeyCode.K)){
+            if(dashCountDownCounter <= 0 && dashCounter <=0){
+                currentMoveSpeed = dashSpeed;
+                dashCounter = dashTime;
+                mybody.gravityScale = 0f;
+                tr.emitting = true;
+            }
+        }
+        if(dashCounter >0){
+            dashCounter -= Time.deltaTime;
+            if(dashCounter <= 0){
+                currentMoveSpeed = MoveSpeed;
+                dashCountDownCounter = dashCountDown;
+                mybody.gravityScale = 5f;
+                tr.emitting = false;
+            }
+        }
+        if(dashCountDownCounter >0){
+            dashCountDownCounter -= Time.deltaTime;
         }
     }
 }
