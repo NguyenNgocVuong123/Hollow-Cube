@@ -39,7 +39,7 @@ public class Health : MonoBehaviour
         }
     }
     private void OnCollisionEnter2D(Collision2D other) {
-        if(other.gameObject.tag=="Trap"){
+        if(other.gameObject.tag=="Enemy"){
             TakeDmg(1);
         }
     }

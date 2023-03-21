@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PLayerController : MonoBehaviour
 {
@@ -22,6 +23,19 @@ public class PLayerController : MonoBehaviour
     private float dashCounter;
     private float dashCountDownCounter;
     [SerializeField] TrailRenderer tr;
+    [SerializeField] Animator animator;
+    public GameObject meleCube;
+    public Transform attackPos;
+    public float attackRange = 0.5f;
+    public float attackRate=2f;
+    float nextAttackTime =0f;
+    public LayerMask enemyLayer;
+    [SerializeField] Transform rangeAttackPos;
+    [SerializeField] GameObject bullet;
+    public float skillRate= 5f;
+    [SerializeField] Image coolDownUI;
+    [SerializeField] float coolDown =5f;
+    private bool isCoolDown;
     
     private void Awake()
     {
@@ -40,10 +54,26 @@ public class PLayerController : MonoBehaviour
     }
     void Update()
     {
-        Debug.Log("moveX: "+ MoveX);
+        if(isCoolDown){
+            coolDownUI.fillAmount += 1/coolDown *Time.deltaTime;
+            if(coolDownUI.fillAmount >=1){
+                coolDownUI.fillAmount = 0;
+                isCoolDown = false;
+            }
+        }
+        Debug.Log("cool: "+ isCoolDown);
         IsGround = Physics2D.OverlapCircle(feetPos.position,feetRadius,WhatIsGround);
         Jumping();
         Dashing();
+        if(Time.time >= nextAttackTime){
+            Attacking();   
+        }
+        if(Input.GetKeyDown(KeyCode.L) &&isCoolDown ==false){
+            Shooting();
+            isCoolDown = true; 
+        }
+        
+        //camera
         //nếu đang rơi
         if(mybody.velocity.y <_fallSpeedYDampingChangeThres && !CameraManager.instance.IsLerpingYDamping &&!CameraManager.instance.LearpingFromPlayerFalling){
             CameraManager.instance.LerpYDamping(true);
@@ -131,5 +161,25 @@ public class PLayerController : MonoBehaviour
         if(dashCountDownCounter >0){
             dashCountDownCounter -= Time.deltaTime;
         }
+    }
+    void Attacking(){
+        if(Input.GetKeyDown(KeyCode.J)){
+            nextAttackTime = Time.time + 1f/attackRate;
+            animator.SetTrigger("Attack");
+            Collider2D[] hitEnemy= Physics2D.OverlapCircleAll(attackPos.position,attackRange,enemyLayer);
+            foreach(Collider2D enemy in hitEnemy){
+                enemy.GetComponent<EnemyHealth>().TakeDmg(1);
+            }
+        }
+        
+    }
+    private void OnDrawGizmosSelected() {
+        if(attackPos == null)
+            return;
+        Gizmos.DrawWireSphere(attackPos.position,attackRange);
+    }
+    void Shooting(){
+        Instantiate(bullet,rangeAttackPos.position, rangeAttackPos.rotation);
+        
     }
 }

@@ -21,12 +21,12 @@ public class CameraManager : MonoBehaviour
     private void Awake() {
         if(instance == null){
             instance = this;
+
         }
         for (int i =0; i< _allVirtualCams.Length;i++){
             if(_allVirtualCams[i].enabled){
                 //đặt cam đang hoạt động vào
                 _currentCam = _allVirtualCams[i];
-
                 //đặt bộ chuyển đổi khung hình
                 _framingTrans = _currentCam.GetCinemachineComponent<CinemachineFramingTransposer>();
             }
