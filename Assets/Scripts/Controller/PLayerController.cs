@@ -24,7 +24,6 @@ public class PLayerController : MonoBehaviour
     private float dashCountDownCounter;
     [SerializeField] TrailRenderer tr;
     [SerializeField] Animator animator;
-    public GameObject meleCube;
     public Transform attackPos;
     public float attackRange = 0.5f;
     public float attackRate=2f;
@@ -32,16 +31,19 @@ public class PLayerController : MonoBehaviour
     public LayerMask enemyLayer;
     [SerializeField] Transform rangeAttackPos;
     [SerializeField] GameObject bullet;
-    public float skillRate= 5f;
     [SerializeField] Image coolDownUI;
     [SerializeField] float coolDown =5f;
     private bool isCoolDown;
+
+    public float knockBackForce;
+    public float knockBackCounter;
+    public float knockBackTime;
+    public bool knockDirRight;
     
-    private void Awake()
-    {
+    private void Start() {
+        _fallSpeedYDampingChangeThres = CameraManager.instance._fallSpeedYDampingChangeThreshold;
         mybody=GetComponent<Rigidbody2D>();
         _camFollowC = _camFollowCam.GetComponent<CamFollowPlayerCam>();
-        _fallSpeedYDampingChangeThres = CameraManager.instance._fallSpeedYDampingChangeThreshold;
         currentMoveSpeed = MoveSpeed;
     }
 
@@ -49,7 +51,18 @@ public class PLayerController : MonoBehaviour
         if(MoveX>0||MoveX<0){
             TurnCheck();
         }
-        Moving();
+        if(knockBackCounter <= 0){
+            Moving();
+        }else{
+            if(knockDirRight == true){
+                mybody.velocity = new Vector2(-knockBackForce, knockBackForce);
+            }
+            if(knockDirRight == false){
+                mybody.velocity = new Vector2(knockBackForce, knockBackForce);
+            }
+            knockBackCounter -= Time.deltaTime;
+        }
+        
         
     }
     void Update()
@@ -168,18 +181,20 @@ public class PLayerController : MonoBehaviour
             animator.SetTrigger("Attack");
             Collider2D[] hitEnemy= Physics2D.OverlapCircleAll(attackPos.position,attackRange,enemyLayer);
             foreach(Collider2D enemy in hitEnemy){
-                enemy.GetComponent<EnemyHealth>().TakeDmg(1);
+                if(enemy.CompareTag("Enemy"))
+                    enemy.GetComponent<EnemyHealth>().TakeDmg(1);
+                if(enemy.CompareTag("RangeEnemy"))
+                    enemy.GetComponent<RangeEnemyHealth>().TakeDmg(1);
             }
-        }
-        
+        }  
+    }
+    void Shooting(){
+        Instantiate(bullet,rangeAttackPos.position, rangeAttackPos.rotation);
     }
     private void OnDrawGizmosSelected() {
         if(attackPos == null)
             return;
         Gizmos.DrawWireSphere(attackPos.position,attackRange);
     }
-    void Shooting(){
-        Instantiate(bullet,rangeAttackPos.position, rangeAttackPos.rotation);
-        
-    }
+    
 }

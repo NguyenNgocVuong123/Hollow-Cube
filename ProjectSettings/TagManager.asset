@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Trap
   - Enemy
+  - RangeEnemy
   layers:
   - Default
   - TransparentFX
@@ -18,8 +19,8 @@ TagManager:
   - Enemy
   - Player
   - PlayerBullet
-  - 
-  - 
+  - RangeBullet
+  - RangeEnemy
   - Post
   - 
   - 

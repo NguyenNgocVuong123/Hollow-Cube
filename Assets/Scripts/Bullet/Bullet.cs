@@ -15,7 +15,11 @@ public class Bullet : MonoBehaviour
         if(enemyHealth != null){
         enemyHealth.TakeDmg(3);
         }
-        Destroy(gameObject);
+        RangeEnemyHealth rangeEnemyHealth = hitInfo.GetComponent<RangeEnemyHealth>();
+        if(rangeEnemyHealth != null){
+        rangeEnemyHealth.TakeDmg(3);
+        }
         
+        Destroy(gameObject);
     }
 }
