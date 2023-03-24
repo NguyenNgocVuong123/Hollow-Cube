@@ -6,18 +6,18 @@ using Cinemachine;
 public class CameraManager : MonoBehaviour
 {  
     public static CameraManager instance;
+    public bool IsLerpingYDamping {get; private set;}
+    public bool LearpingFromPlayerFalling {get;set;}
+    [Header("Camera Setting When Player is Falling")]
     [SerializeField] private CinemachineVirtualCamera[] _allVirtualCams;
     [SerializeField] float _fallDampingAmount = 0.25f;
     [SerializeField] float _fallYDampingTime = 0.35f;
+    private float _normalYDampingAmount;
     public float _fallSpeedYDampingChangeThreshold = -15f;
-
-    public bool IsLerpingYDamping {get; private set;}
-    public bool LearpingFromPlayerFalling {get;set;}
-
+    [Header("Smoot Camera Setting")]
     private Coroutine _lerpYDampingCoroutine;
     private CinemachineFramingTransposer _framingTrans;
     private CinemachineVirtualCamera _currentCam;
-    private float _normalYDampingAmount;
     private void Awake() {
         if(instance == null){
             instance = this;

@@ -4,16 +4,19 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
-    [SerializeField] GameObject PointA;
-    [SerializeField] GameObject PointB;
+    [Header("Enemy Setting")]
     [SerializeField] float speed;
     private Rigidbody2D rb;
+    [Header("Patrol")]
+    [SerializeField] GameObject PointA;
+    [SerializeField] GameObject PointB;
     private Transform currentPoint;
-
+    [Header("Chasing")]
     [SerializeField] GameObject player;
     [SerializeField]private float distantChase;
     private float chaseSpeed = 2f;
     private bool isChasing;
+    [Header("KnockBack Player")]
     [SerializeField] PLayerController pLayerCon;
     
 

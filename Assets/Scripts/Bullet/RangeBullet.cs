@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class RangeBullet : MonoBehaviour
 {
+    [Header("Bullet Setting")]
     private GameObject target;
     public float speed;
     public Rigidbody2D rb;

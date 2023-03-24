@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class CamFollowPlayerCam : MonoBehaviour
 {
+    [Header("Player Info")]
     [SerializeField] Transform _playerTrans;
     PLayerController _pLayer;
+    [Header("Flip Camera with Player")]
     [SerializeField] float _flipYRotationTime = 0.5f;
-    Coroutine _turnCoroutine;
+    private Coroutine _turnCoroutine;
     bool _IsFacingRight;
     private void Awake() {
         _pLayer = _playerTrans.gameObject.GetComponent<PLayerController>();
