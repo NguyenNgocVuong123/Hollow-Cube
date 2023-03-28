@@ -22,7 +22,6 @@ public class GameManager : MonoBehaviour
         audioManager = FindObjectOfType<AudioManager>();
     }
     private void Initialized(Scene scene, LoadSceneMode sceneMode){
-        Debug.Log("a");
         var playerController = FindObjectOfType<PLayerController>();
         if(playerController != null)
             player = playerController.gameObject;

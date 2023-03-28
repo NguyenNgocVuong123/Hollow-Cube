@@ -13,7 +13,6 @@ public class SaveSystemManager : MonoBehaviour
     }
     private void Start() {
         var result = LoadData(); //if have loaded data
-        Debug.Log(result);
     }
     public void ResetData(){//when click play == newgame, loaddata bay mau
         PlayerPrefs.DeleteKey(currentHealth);   
@@ -33,7 +32,6 @@ public class SaveSystemManager : MonoBehaviour
     public void SaveData(int _sceneIndex, int _playerHealth){
         if(_loadedData == null)
             _loadedData = new LoadedData();
-        Debug.Log("save");
         _loadedData._playerHealth = _playerHealth;
         _loadedData._sceneIndex = _sceneIndex;
         PlayerPrefs.SetInt(currentHealth,_playerHealth);
