@@ -6,28 +6,20 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager instance;
     public Text _text;
     public GameObject player;
     public SaveSystemManager saveSystem;
     public GameObject gameOverUI;
-    PLayerController PLayerCon;
-    
-    
-    void MakeInstance(){
-        if (instance == null)
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-        }else{
-            Destroy(gameObject);
-        }
-    }
+    public Animator animator;
+    PLayerController _pLayerCon;
+    public AudioClip newTrack;
+    private AudioManager audioManager;
 
     private void Awake(){
         SceneManager.sceneLoaded += Initialized;
-        
-        PLayerCon = FindObjectOfType<PLayerController>();
+        _pLayerCon = FindObjectOfType<PLayerController>();
+        animator = GetComponentInChildren<Animator>();
+        audioManager = FindObjectOfType<AudioManager>();
     }
     private void Initialized(Scene scene, LoadSceneMode sceneMode){
         Debug.Log("a");
@@ -41,20 +33,20 @@ public class GameManager : MonoBehaviour
         } 
     }
     public void LoadLevel(){
+        audioManager.ChangeBGM(newTrack);
         if(saveSystem._loadedData != null){
             SceneManager.LoadScene(saveSystem._loadedData._sceneIndex);
-            return;
         }
         LoadOnNextLevel();
     }
     public void LoadOnNextLevel(){
+        
+        animator.SetBool("IsStart", true);
+        Invoke("LoadWait",1f);
+    }
+    private void LoadWait(){
+        animator.SetBool("IsStart", false);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-    }
-    public void LoadOnBossLevel(){
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 2);
-    }
-    public void LoadBackLevel(){
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
     }
     public void SaveData(){
         if( player != null )
@@ -63,13 +55,13 @@ public class GameManager : MonoBehaviour
 
     public void GameOver(){
         Time.timeScale =0f;
-        PLayerCon.enabled = false;
+        _pLayerCon.enabled = false;
         gameOverUI.SetActive(true);
         _text.text ="Game Over";
     }
     public void Win(){
         Time.timeScale =0f;
-        PLayerCon.enabled = false;
+        _pLayerCon.enabled = false;
         gameOverUI.SetActive(true);
         _text.text ="You Win";
     }
@@ -77,13 +69,14 @@ public class GameManager : MonoBehaviour
         saveSystem.ResetData();
         SceneManager.LoadScene(SceneManager.GetSceneByName("Menu").buildIndex +1);
         Time.timeScale =1f;
-        PLayerCon.enabled = true;
+        _pLayerCon.enabled = true;
+        audioManager.ChangeBGM(newTrack);
     }
     public void Restart(){
         saveSystem.ResetData();
         SceneManager.LoadScene(SceneManager.GetSceneByName("Menu").buildIndex +2);
         Time.timeScale =1f;
-        PLayerCon.enabled = true;
+        _pLayerCon.enabled = true;
     }
     public void Quit(){
         Application.Quit();

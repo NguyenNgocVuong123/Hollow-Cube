@@ -102,7 +102,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
-  m_Color: {r: 0, g: 0.57320344, b: 0.754717, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -281,16 +281,18 @@ MonoBehaviour:
   jumpHeight: 9
   jumpTime: 0.35
   feetPos: {fileID: 869236665342543895}
-  _camFollowCam: {fileID: 0}
   IsFacingRight: 0
   WhatIsGround:
     serializedVersion: 2
     m_Bits: 128
+  WhatIsStandPos:
+    serializedVersion: 2
+    m_Bits: 0
+  tr: {fileID: 869236665646760406}
+  animator: {fileID: 869236665646760392}
   dashSpeed: 20
   dashTime: 0.2
   dashCountDown: 1
-  tr: {fileID: 869236665646760406}
-  animator: {fileID: 869236665646760392}
   attackPos: {fileID: 869236665101869965}
   attackRange: 1
   attackRate: 2
@@ -300,11 +302,12 @@ MonoBehaviour:
   rangeAttackPos: {fileID: 869236665433174092}
   bullet: {fileID: 7979076896253570607, guid: bbd577827bfe93143b7badf834986252, type: 3}
   coolDownUI: {fileID: 0}
-  coolDown: 5
+  coolDown: 3
   knockBackForce: 5
   knockBackCounter: 0
   knockBackTime: 0.2
   knockDirRight: 0
+  _camFollowCam: {fileID: 0}
 --- !u!114 &869236665646760407
 MonoBehaviour:
   m_ObjectHideFlags: 0

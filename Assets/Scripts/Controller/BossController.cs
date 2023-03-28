@@ -41,7 +41,9 @@ public class BossController : MonoBehaviour
     private void Update() {
         checkGround = Physics2D.OverlapCircle(goundCheckPos.position, _cirRadius, whatIsGround);
         checkWall = Physics2D.OverlapCircle(wallCheckPos.position, _cirRadius, whatIsGround);
-
+        // rb.gravityScale = 1f;
+        // standPos.SetActive(false);
+        // Phase2();
         if(_bossHealth.currentHealth > 20){
             Phase1();
             return;

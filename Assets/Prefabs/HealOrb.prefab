@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3095389085694791891}
   - component: {fileID: 6941682524405862299}
   - component: {fileID: 887896370559557881}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: HealOrb
   m_TagString: HealOrb
   m_Icon: {fileID: 0}

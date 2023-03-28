@@ -10,6 +10,8 @@ TagManager:
   - HealOrb
   - Boss
   - StandPos
+  - GameMusic
+  - GOUI
   layers:
   - Default
   - TransparentFX
@@ -27,7 +29,7 @@ TagManager:
   - Post
   - Boss
   - StandPos
-  - 
+  - HealOrb
   - 
   - 
   - 
