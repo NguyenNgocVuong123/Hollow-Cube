@@ -6,12 +6,12 @@ public class RangeBullet : MonoBehaviour
 {
     [Header("Bullet Setting")]
     private GameObject target;
-    public float speed;
+    public float _speed;
     public Rigidbody2D rb;
 
     private void Start() {
         target = GameObject.FindGameObjectWithTag("Player");
-        Vector2 moveDir = (target.transform.position - transform.position).normalized *speed;
+        Vector2 moveDir = (target.transform.position - transform.position).normalized * _speed;
         rb.velocity = new Vector2(moveDir.x, moveDir.y);
     }
     private void OnTriggerEnter2D(Collider2D hitInfo) {

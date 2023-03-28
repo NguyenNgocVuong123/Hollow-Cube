@@ -11,7 +11,6 @@ public class Health : MonoBehaviour
     public Sprite fullHeart;
     public Sprite emptyHeart;
     
-
     private void Update() {
         if(_health >_numOfheart){
             _health = _numOfheart;
@@ -37,10 +36,20 @@ public class Health : MonoBehaviour
         if(_health <= 0){
             _health = 0;
             Debug.Log("game Over");
+            FindObjectOfType<GameManager>().GameOver();
         }
+    }
+    public void Healing(int heal){
+        _health = _health + heal;
     }
     private void OnCollisionEnter2D(Collision2D other) {
         if(other.gameObject.tag=="Enemy"){
+            TakeDmg(1);
+        }
+        if(other.gameObject.tag=="Trap"){
+            TakeDmg(1);
+        }
+        if(other.gameObject.tag=="Boss"){
             TakeDmg(1);
         }
     }

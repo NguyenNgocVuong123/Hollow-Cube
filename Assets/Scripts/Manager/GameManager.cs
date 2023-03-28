@@ -1,16 +1,33 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager instance;
+    public Text _text;
     public GameObject player;
     public SaveSystemManager saveSystem;
+    public GameObject gameOverUI;
+    PLayerController PLayerCon;
+    
+    
+    void MakeInstance(){
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }else{
+            Destroy(gameObject);
+        }
+    }
 
     private void Awake(){
         SceneManager.sceneLoaded += Initialized;
-        DontDestroyOnLoad(gameObject);
+        
+        PLayerCon = FindObjectOfType<PLayerController>();
     }
     private void Initialized(Scene scene, LoadSceneMode sceneMode){
         Debug.Log("a");
@@ -42,5 +59,33 @@ public class GameManager : MonoBehaviour
     public void SaveData(){
         if( player != null )
         saveSystem.SaveData(SceneManager.GetActiveScene().buildIndex + 1, player.GetComponent<Health>()._health);
+    }
+
+    public void GameOver(){
+        Time.timeScale =0f;
+        PLayerCon.enabled = false;
+        gameOverUI.SetActive(true);
+        _text.text ="Game Over";
+    }
+    public void Win(){
+        Time.timeScale =0f;
+        PLayerCon.enabled = false;
+        gameOverUI.SetActive(true);
+        _text.text ="You Win";
+    }
+    public void Home(){
+        saveSystem.ResetData();
+        SceneManager.LoadScene(SceneManager.GetSceneByName("Menu").buildIndex +1);
+        Time.timeScale =1f;
+        PLayerCon.enabled = true;
+    }
+    public void Restart(){
+        saveSystem.ResetData();
+        SceneManager.LoadScene(SceneManager.GetSceneByName("Menu").buildIndex +2);
+        Time.timeScale =1f;
+        PLayerCon.enabled = true;
+    }
+    public void Quit(){
+        Application.Quit();
     }
 }

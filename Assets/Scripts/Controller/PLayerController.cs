@@ -13,9 +13,10 @@ public class PLayerController : MonoBehaviour
     private Rigidbody2D mybody;
     [Header("Jumping && Ground check")]
     [SerializeField] Transform feetPos;
-    private bool IsGround,IsJumping;
+    private bool IsGround,isStandPos,IsJumping;
     public bool IsFacingRight;
     [SerializeField] LayerMask WhatIsGround;
+    [SerializeField] LayerMask WhatIsStandPos;
     [SerializeField] TrailRenderer tr;
     [SerializeField] Animator animator;
     //
@@ -83,6 +84,7 @@ public class PLayerController : MonoBehaviour
         }
         //check ground bằng vi tri của ojb FeetPos, nếu ojb này chạm vào ojb có layer là Ground thì = true
         IsGround = Physics2D.OverlapCircle(feetPos.position,feetRadius,WhatIsGround);
+        isStandPos = Physics2D.OverlapCircle(feetPos.position,feetRadius,WhatIsStandPos);
         //camera
         //nếu đang rơi
         if(mybody.velocity.y <_fallSpeedYDampingChangeThres && !CameraManager.instance.IsLerpingYDamping &&!CameraManager.instance.LearpingFromPlayerFalling){
@@ -116,7 +118,7 @@ public class PLayerController : MonoBehaviour
     }
     void Jumping()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && IsGround ==true)
+        if (Input.GetKeyDown(KeyCode.Space) && (IsGround ==true || isStandPos == true))
         {
             mybody.velocity = new Vector2(mybody.velocity.x, jumpHeight);
             // mybody.AddForce(new Vector2(0f, jumpHeight), ForceMode2D.Impulse);
@@ -169,6 +171,8 @@ public class PLayerController : MonoBehaviour
                     enemy.GetComponent<EnemyHealth>().TakeDmg(1);
                 if(enemy.CompareTag("RangeEnemy"))
                     enemy.GetComponent<RangeEnemyHealth>().TakeDmg(1);
+                if(enemy.CompareTag("Boss"))
+                    enemy.GetComponent<BossHealth>().TakeDmg(1);
             }
         }  
     }

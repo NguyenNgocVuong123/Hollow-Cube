@@ -76,6 +76,7 @@ GameObject:
   - component: {fileID: 7423971106761766118}
   - component: {fileID: 7423971106761766117}
   - component: {fileID: 1979418313}
+  - component: {fileID: 644540537}
   m_Layer: 8
   m_Name: Range
   m_TagString: RangeEnemy
@@ -113,7 +114,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 2
   speedPatroll: 1
-  player: {fileID: 0}
   lineOfSight: 15
   shootRange: 5
   bullet: {fileID: 6371516274427365420, guid: 861643829fc8b914da1c5f6d469dd212, type: 3}
@@ -169,7 +169,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Health: 5
+  animator: {fileID: 0}
   rangeEnemyController: {fileID: 0}
+--- !u!95 &644540537
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7423971106761766121}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 2587ef13030cdeb4490d5e03d50acd66, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &7423971106966881498
 GameObject:
   m_ObjectHideFlags: 0

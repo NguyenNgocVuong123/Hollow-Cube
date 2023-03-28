@@ -7,6 +7,9 @@ TagManager:
   - Trap
   - Enemy
   - RangeEnemy
+  - HealOrb
+  - Boss
+  - StandPos
   layers:
   - Default
   - TransparentFX
@@ -22,8 +25,8 @@ TagManager:
   - RangeBullet
   - RangeEnemy
   - Post
-  - 
-  - 
+  - Boss
+  - StandPos
   - 
   - 
   - 

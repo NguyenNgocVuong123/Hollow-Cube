@@ -5,10 +5,10 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     [Header("Bullet Setting")]
-    [SerializeField] float speed = 20f;
+    [SerializeField] float _speed = 20f;
     [SerializeField] Rigidbody2D rb;
     private void Start() {
-        rb.velocity = transform.right *speed;
+        rb.velocity = transform.right * _speed;
     }
     private void OnTriggerEnter2D(Collider2D hitInfo) {
         Debug.Log(hitInfo.name);
@@ -20,7 +20,10 @@ public class Bullet : MonoBehaviour
         if(rangeEnemyHealth != null){
         rangeEnemyHealth.TakeDmg(3);
         }
-        
+        BossHealth bossHealth = hitInfo.GetComponent<BossHealth>();
+        if(bossHealth != null){
+        bossHealth.TakeDmg(3);
+        }
         Destroy(gameObject);
     }
 }

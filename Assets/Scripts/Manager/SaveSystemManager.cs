@@ -8,14 +8,12 @@ public class SaveSystemManager : MonoBehaviour
     [Header("Save Data Key")]
     public string currentHealth = "PlayerHealth",currentScene = "SceneIndex", currentSaveData = "SavePresent";
     public LoadedData _loadedData {get; private set; } //check savedata
-    public UnityEvent<bool> OnDataLoadResult;//event onClick button Continue
     private void Awake() {
         DontDestroyOnLoad(gameObject);
     }
     private void Start() {
         var result = LoadData(); //if have loaded data
         Debug.Log(result);
-        OnDataLoadResult?.Invoke(result);//then set the event of Continue button to true
     }
     public void ResetData(){//when click play == newgame, loaddata bay mau
         PlayerPrefs.DeleteKey(currentHealth);   
